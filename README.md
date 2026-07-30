@@ -4,17 +4,6 @@ Exploratory data analysis and churn prediction on the IBM/Kaggle Telco Customer
 Churn dataset (7,043 customers, 21 features), identifying key drivers of churn 
 and building a baseline predictive model.
 
-## Run it yourself
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/YOUR_USERNAME/telco-churn-analysis/blob/main/notebooks/telco_churn_analysis.ipynb)
-
-Or locally:
-\`\`\`bash
-git clone https://github.com/YOUR_USERNAME/telco-churn-analysis.git
-cd telco-churn-analysis
-pip install -r requirements.txt
-jupyter notebook notebooks/telco_churn_analysis.ipynb
-\`\`\`
-
 ## Dataset
 7,043 rows, 21 columns: 17 categorical fields, 3 numeric fields (tenure, 
 MonthlyCharges, TotalCharges), 1 high-cardinality ID (customerID), and the 
