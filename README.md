@@ -1,1 +1,77 @@
-# Telco-Customer-Churn
+# Telco Customer Churn Analysis
+
+Exploratory data analysis and churn prediction on the IBM/Kaggle Telco Customer 
+Churn dataset (7,043 customers, 21 features), identifying key drivers of churn 
+and building a baseline predictive model.
+
+## Run it yourself
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/YOUR_USERNAME/telco-churn-analysis/blob/main/notebooks/telco_churn_analysis.ipynb)
+
+Or locally:
+\`\`\`bash
+git clone https://github.com/YOUR_USERNAME/telco-churn-analysis.git
+cd telco-churn-analysis
+pip install -r requirements.txt
+jupyter notebook notebooks/telco_churn_analysis.ipynb
+\`\`\`
+
+## Dataset
+7,043 rows, 21 columns: 17 categorical fields, 3 numeric fields (tenure, 
+MonthlyCharges, TotalCharges), 1 high-cardinality ID (customerID), and the 
+binary target (Churn). 11 TotalCharges values (0.16%) were missing and 
+imputed with the column mean.
+
+## Key Findings
+- **Tenure is the strongest signal**: churned customers average 18.0 months 
+  tenure vs. 37.6 months for retained customers (correlation with churn: −0.35).
+- **Fiber optic internet customers churn far more**: 41.9% churn rate, vs. 
+  19.0% for DSL and 7.4% for customers with no internet service.
+- **Month-to-month contracts churn substantially more** than one- or 
+  two-year contracts (visual, histogram-based finding).
+- **Electronic check payers show a higher churn rate** than other payment 
+  methods (visual, histogram-based finding).
+- **Pricing paradox**: churned customers pay more per month on average 
+  ($74.44 vs. $61.27) but have *lower* total lifetime charges ($1,531.80 
+  vs. $2,555.34) — consistent with churn happening early, before charges 
+  accumulate, rather than total spend driving churn.
+- No outliers were detected in the numeric columns using a 5th/95th 
+  percentile IQR check.
+
+## Modeling
+Baseline: **Logistic Regression** with `class_weight="balanced"` (to address 
+the ~73/27 class imbalance), 80/20 stratified train/test split.
+
+| Metric | Score |
+|---|---|
+| Accuracy | 0.740 |
+| Precision (churn class) | 0.507 |
+| Recall (churn class) | 0.786 |
+| F1 (churn class) | 0.616 |
+| ROC-AUC | 0.841 |
+
+Confusion matrix (test set, n=1,409):
+
+|  | Predicted: No Churn | Predicted: Churn |
+|---|---|---|
+| **Actual: No Churn** | 749 | 286 |
+| **Actual: Churn** | 80 | 294 |
+
+The model was deliberately tuned toward **recall over precision** on the 
+churn class: missing an at-risk customer (false negative) is costlier in a 
+retention context than flagging a customer who wasn't actually going to 
+leave (false positive) — the latter just costs an unneeded retention offer.
+
+## Comparison to a public baseline
+A popular public notebook on this dataset ([source](https://kaggle.com/code/emineyetm/telco-customer-churn/notebook)) 
+reports 78.3% accuracy with an unweighted Random Forest (70/30 split, no 
+stratification, no class balancing). Accuracy alone isn't the right metric 
+to compare on here — that model doesn't report precision/recall, so it's 
+unclear how well it actually catches churners vs. simply leaning on the 
+majority class. This project optimizes deliberately for recall on the 
+minority (churn) class instead of raw accuracy.
+
+## Limitations & Next Steps
+See below.
+
+## Tech Stack
+Python, pandas, numpy, matplotlib, seaborn, scikit-learn
