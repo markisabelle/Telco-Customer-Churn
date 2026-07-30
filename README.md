@@ -59,8 +59,21 @@ unclear how well it actually catches churners vs. simply leaning on the
 majority class. This project optimizes deliberately for recall on the 
 minority (churn) class instead of raw accuracy.
 
-## Limitations & Next Steps
-See below.
+## Next Steps
+
+**Next Steps:**
+- Verify whether the 11 missing TotalCharges rows share a common trait 
+  (e.g., tenure = 0) before finalizing the imputation approach.
+- Try tree-based models (Random Forest, XGBoost) to test for non-linear 
+  gains over the logistic regression baseline, using the same stratified 
+  split and class-balancing approach for a fair comparison.
+- Tune the classification threshold based on the real-world cost of a 
+  missed churner vs. an unnecessary retention offer, rather than the 
+  default 0.5 cutoff.
+- Add cross-validation to get a more robust estimate of model performance 
+  than a single train/test split provides.
+- Engineer features such as total services subscribed or average spend 
+  per tenure month.
 
 ## Tech Stack
 Python, pandas, numpy, matplotlib, seaborn, scikit-learn
